@@ -47,9 +47,12 @@ export default function DesktopHero() {
                 <Link href="#pricing" className="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300 transform hover:-translate-y-1">
                   See Pricing
                 </Link>
-                <Link href="/contact" className="bg-slate-200 text-slate-800 font-bold py-3 px-8 rounded-lg hover:bg-slate-300 transition-colors">
-                  Contact Us
-                </Link>
+             <a 
+  href="tel:+917009364216" 
+  className="bg-slate-200 text-slate-800 font-bold py-3 px-8 rounded-lg hover:bg-slate-300 transition-colors"
+>
+  Call Now
+</a>  
               </div>
             </Fade>
           </div>

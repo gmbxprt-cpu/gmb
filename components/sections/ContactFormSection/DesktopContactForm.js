@@ -1,21 +1,16 @@
 "use client";
 import { useState } from 'react';
 import { Fade } from 'react-awesome-reveal';
+// 👇 Step 1: useRouter ko import karein
+import { useRouter } from 'next/navigation';
 
 export default function DesktopContactForm() {
   const [status, setStatus] = useState('');
   const [showOther, setShowOther] = useState(false);
+  // 👇 Step 2: useRouter ko initialize karein
+  const router = useRouter();
 
-  if (status === 'success') {
-    return (
-      <section className="py-24 bg-slate-50">
-        <div className="text-center py-20">
-          <h2 className="text-3xl font-bold text-green-600">Thank You!</h2>
-          <p className="mt-4 text-lg text-slate-700">Our team will shortly contact you.</p>
-        </div>
-      </section>
-    );
-  }
+  // 👇 Step 3: Yahan se 'if (status === 'success')' wala block HATA diya gaya hai.
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,8 +30,12 @@ export default function DesktopContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      if (response.ok) setStatus('success');
-      else setStatus('error');
+      if (response.ok) {
+        // 👇 Step 4: Success hone par /thank-you page par redirect karein
+        router.push('/thank-you');
+      } else {
+        setStatus('error');
+      }
     } catch (error) {
       setStatus('error');
     }
@@ -84,28 +83,23 @@ export default function DesktopContactForm() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-slate-800">Name</label>
-                      {/* 👇 Color classes add kar di hain */}
                       <input type="text" name="name" id="name" required placeholder="Your Name" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                     </div>
                      <div>
                       <label htmlFor="email-contact" className="block text-sm font-medium text-slate-800">Email</label>
-                      {/* 👇 Color classes add kar di hain */}
                       <input type="email" name="email" id="email-contact" required placeholder="Your Email" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                     </div>
                   </div>
                   <div>
                     <label htmlFor="contact" className="block text-sm font-medium text-slate-800">Contact Number</label>
-                    {/* 👇 Color classes add kar di hain */}
                     <input type="tel" name="contact" id="contact" required placeholder="123-45-678" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                   </div>
                   <div>
                     <label htmlFor="gmbLink" className="block text-sm font-medium text-slate-800">GMB Profile Link</label>
-                    {/* 👇 Color classes add kar di hain */}
                     <input type="url" name="gmbLink" id="gmbLink" required placeholder="https://maps.app.goo.gl/..." className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                   </div>
                   <div>
                     <label htmlFor="interest" className="block text-sm font-medium text-slate-800">Are you interested in?</label>
-                    {/* 👇 Color class add kar di hai */}
                     <select name="interest" id="interest" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 focus:ring-blue-500 focus:border-blue-500">
                       <option value="" className="text-slate-500">Select a service</option>
                       <option value="GMB SEO">GMB SEO</option>
@@ -118,7 +112,6 @@ export default function DesktopContactForm() {
                   {showOther && (
                     <div>
                       <label htmlFor="other" className="block text-sm font-medium text-slate-800">Please Specify</label>
-                      {/* 👇 Color classes add kar di hain */}
                       <input type="text" name="other" id="other" required placeholder="Specify your need" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                     </div>
                   )}

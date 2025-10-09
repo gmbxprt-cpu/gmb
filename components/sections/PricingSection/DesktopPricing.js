@@ -9,13 +9,32 @@ const WhatsAppIcon = () => <svg className="w-5 h-5 mr-2" fill="currentColor" vie
 
 const PricingCard = ({ plan, price, isFeatured = false, isYearly }) => {
     const phoneNumber = "917009364216";
-    // 👇 URL se message (text) wala part hata diya hai
+    // --- CHANGE YAHAN KIYA GAYA HAI ---
+    // Message wali lines hata di gayi hain
     const whatsappUrl = `https://wa.me/${phoneNumber}`;
 
+    // ... (baaki ka code waisa hi hai)
+    let borderStyle = 'border border-slate-200';
+    if (isFeatured) {
+        borderStyle = 'border-2 border-blue-600 transform scale-105';
+    } else if (plan.name === 'Silver') {
+        borderStyle = 'border-2 border-red-700';
+    } else if (plan.name === 'Platinum') {
+        borderStyle = 'border-2 border-green-700';
+    }
+    let tagStyle = 'bg-slate-200 text-black';
+    if (isFeatured) {
+        tagStyle = 'bg-yellow-400 text-black';
+    } else if (plan.name === 'Silver') {
+        tagStyle = 'bg-red-700 text-white';
+    } else if (plan.name === 'Platinum') {
+        tagStyle = 'bg-green-700 text-white';
+    }
+
     return (
-        <div className={`relative bg-white rounded-2xl p-8 flex flex-col shadow-lg transition-all duration-300 ${isFeatured ? 'border-2 border-blue-600 transform scale-105' : 'border border-slate-200'}`}>
+        <div className={`relative bg-white rounded-2xl p-8 flex flex-col shadow-lg transition-all duration-300 ${borderStyle}`}>
             {isFeatured && ( <span className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">Most Popular</span> )}
-            <div className={`absolute top-4 right-[-1px] ${isFeatured ? 'bg-yellow-400' : 'bg-slate-200'} text-black font-bold text-sm px-4 py-1 rounded-l-full`}>{plan.name}</div>
+            <div className={`absolute top-4 right-[-1px] ${tagStyle} font-bold text-base px-4 py-1 rounded-l-full`}>{plan.name}</div>
             <h3 className="text-2xl font-black text-left text-black mt-8">GMB SEO MONTHLY PACKAGES</h3>
             <p className="text-left mt-4"><span className="text-5xl font-extrabold text-black">₹{price.toLocaleString('en-IN')}</span><span className="text-gray-500 font-medium">/Month</span></p>
             <div className="flex-grow">
@@ -36,9 +55,9 @@ const PricingCard = ({ plan, price, isFeatured = false, isYearly }) => {
 };
 
 export default function DesktopPricing() {
+    // ... (Is section mein koi change nahi hai)
     const [isYearly, setIsYearly] = useState(false);
-    const getPrice = (plan) => isYearly ? Math.round(plan.price * 0.50) : plan.price; // 50% discount
-
+    const getPrice = (plan) => isYearly ? Math.round(plan.price * 0.50) : plan.price;
     const schemaOffers = Object.values(plansData).map(plan => ({ "@type": "Offer", "name": `${plan.name} Plan`, "price": plan.price, "priceCurrency": "INR" }));
     const pricingSchema = { "@context": "https://schema.org", "@type": "Product", "name": "GMB SEO Plans", "description": "Monthly and yearly GMB SEO plans to boost your Google ranking.", "brand": { "@type": "Brand", "name": "GMB Expert" }, "offers": schemaOffers };
 

@@ -1,18 +1,15 @@
 "use client";
 import { useState } from 'react';
+// 👇 Step 1: useRouter ko import karein
+import { useRouter } from 'next/navigation';
 
 export default function HeroLeadForm() {
   const [status, setStatus] = useState('');
   const [showOther, setShowOther] = useState(false);
+  // 👇 Step 2: useRouter ko initialize karein
+  const router = useRouter();
 
-  if (status === 'success') {
-    return (
-      <div className="bg-white p-8 rounded-lg shadow-2xl text-center border-t-4 border-green-500">
-        <h3 className="text-2xl font-bold text-green-600">Thank You!</h3>
-        <p className="mt-2 text-slate-700">We've received your request and will be in touch shortly.</p>
-      </div>
-    );
-  }
+  // 👇 Step 3: Yahan se 'if (status === 'success')' wala block HATA diya gaya hai.
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +30,8 @@ export default function HeroLeadForm() {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        setStatus('success');
+        // 👇 Step 4: Success hone par /thank-you page par redirect karein
+        router.push('/thank-you');
       } else {
         setStatus('error');
       }
@@ -48,23 +46,18 @@ export default function HeroLeadForm() {
       <p className="text-center text-slate-500 mb-6">Submit your details to get started.</p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          {/* 👇 Color classes add kar di hain */}
           <input type="text" name="name" required placeholder="Your Name" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         </div>
         <div>
-          {/* 👇 Color classes add kar di hain */}
           <input type="email" name="email" required placeholder="Your Email" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         </div>
         <div>
-          {/* 👇 Color classes add kar di hain */}
           <input type="tel" name="contact" required placeholder="Contact Number" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         </div>
         <div>
-          {/* 👇 Color classes add kar di hain */}
           <input type="url" name="gmbLink" required placeholder="GMB Profile Link" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         </div>
         <div>
-          {/* 👇 Color class add kar di hai */}
           <select name="interest" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 focus:ring-blue-500 focus:border-blue-500">
             <option value="" className="text-slate-500">Interested in...</option>
             <option value="GMB SEO">GMB SEO</option>
@@ -75,7 +68,6 @@ export default function HeroLeadForm() {
           </select>
         </div>
         {showOther && (
-            // 👇 Color classes add kar di hain
             <input type="text" name="other" placeholder="Please Specify" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         )}
         <div>

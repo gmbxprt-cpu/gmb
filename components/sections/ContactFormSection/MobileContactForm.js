@@ -1,20 +1,15 @@
 "use client";
 import { useState } from 'react';
+// 👇 Step 1: useRouter ko import karein
+import { useRouter } from 'next/navigation';
 
 export default function MobileContactForm() {
   const [status, setStatus] = useState('');
   const [showOther, setShowOther] = useState(false);
+  // 👇 Step 2: useRouter ko initialize karein
+  const router = useRouter();
 
-  if (status === 'success') {
-    return (
-      <section className="py-0 bg-slate-50">
-        <div className="text-center py-16 px-4">
-          <h2 className="text-2xl font-bold text-green-600">Thank You!</h2>
-          <p className="mt-3 text-base text-slate-700">Our team will shortly contact you.</p>
-        </div>
-      </section>
-    );
-  }
+  // 👇 Step 3: Yahan se 'if (status === 'success')' wala block HATA diya gaya hai.
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,8 +29,12 @@ export default function MobileContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      if (response.ok) setStatus('success');
-      else setStatus('error');
+      if (response.ok) {
+        // 👇 Step 4: Success hone par /thank-you page par redirect karein
+        router.push('/thank-you');
+      } else {
+        setStatus('error');
+      }
     } catch (error) {
       setStatus('error');
     }
@@ -52,27 +51,22 @@ export default function MobileContactForm() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="name-mobile" className="block text-sm font-bold text-slate-700">Name</label>
-              {/* 👇 Color classes add kar di hain */}
               <input type="text" name="name" id="name-mobile" required placeholder="e.g., John Doe" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
             </div>
             <div>
               <label htmlFor="email-mobile" className="block text-sm font-bold text-slate-700">Email</label>
-              {/* 👇 Color classes add kar di hain */}
               <input type="email" name="email" id="email-mobile" required placeholder="e.g., john.doe@example.com" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
             </div>
             <div>
               <label htmlFor="contact-mobile" className="block text-sm font-bold text-slate-700">Contact Number</label>
-              {/* 👇 Color classes add kar di hain */}
               <input type="tel" name="contact" id="contact-mobile" required placeholder="Your contact number" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
             </div>
             <div>
               <label htmlFor="gmbLink-mobile" className="block text-sm font-bold text-slate-700">GMB Profile Link</label>
-              {/* 👇 Color classes add kar di hain */}
               <input type="url" name="gmbLink" id="gmbLink-mobile" required placeholder="Your GMB profile URL" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
             </div>
             <div>
               <label htmlFor="interest-mobile" className="block text-sm font-bold text-slate-700">Are you interested in?</label>
-              {/* 👇 Color class add kar di hai */}
               <select name="interest" id="interest-mobile" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 focus:ring-blue-500 focus:border-blue-500">
                 <option value="" className="text-slate-500">Select a service</option>
                 <option value="GMB SEO">GMB SEO</option>
@@ -85,7 +79,6 @@ export default function MobileContactForm() {
             {showOther && (
               <div>
                 <label htmlFor="other-mobile" className="block text-sm font-bold text-slate-700">Please Specify</label>
-                {/* 👇 Color classes add kar di hain */}
                 <input type="text" name="other" id="other-mobile" required placeholder="Describe your requirement" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
               </div>
             )}

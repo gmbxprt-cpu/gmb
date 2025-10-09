@@ -1,5 +1,7 @@
 "use client";
 import { Fade } from "react-awesome-reveal";
+// CHANGE: Link ko import kiya
+import Link from 'next/link';
 
 // नए आइकॉन
 const icons = {
@@ -42,9 +44,16 @@ export default function MobileBenefits() {
               {icons.lightbulb}
               <span className="text-xl font-bold text-slate-800">Get Started with GMB Listing Optimization Today</span>
             </div>
-            <button className="w-full mt-6 sm:mt-4 bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg">
+            
+            {/* --- CHANGE YAHAN KIYA GAYA HAI --- */}
+            {/* Button ko Link banakar #pricing se jod diya hai */}
+            <Link 
+              href="#pricing"
+              className="block w-full mt-6 sm:mt-4 bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg"
+            >
               Start Optimizing
-            </button>
+            </Link>
+
           </div>
         </Fade>
       </div>

@@ -10,13 +10,33 @@ const WhatsAppIcon = () => <svg className="w-4 h-4 mr-1.5" fill="currentColor" v
 
 const PricingCard = ({ plan, price, isFeatured = false, isYearly }) => {
     const phoneNumber = "917009364216";
-    // 👇 URL se message (text) wala part hata diya hai
-    const whatsappUrl = `https://wa.me/${phoneNumber}`;
+    const whatsappMessage = `Hello GMB Expert, I am interested in the "${plan.name}" ${isYearly ? 'Yearly' : 'Monthly'} plan.`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+    // --- NAYE COLORS KA LOGIC YAHAN ADD KIYA GAYA HAI ---
+    let borderStyle = 'border border-slate-200';
+    if (isFeatured) { // Gold plan
+        borderStyle = 'border-2 border-blue-600 transform scale-105';
+    } else if (plan.name === 'Silver') {
+        borderStyle = 'border-2 border-red-700';
+    } else if (plan.name === 'Platinum') {
+        borderStyle = 'border-2 border-green-700';
+    }
+
+    let tagStyle = 'bg-slate-200 text-black';
+    if (isFeatured) { // Gold plan
+        tagStyle = 'bg-yellow-400 text-black';
+    } else if (plan.name === 'Silver') {
+        tagStyle = 'bg-red-700 text-white';
+    } else if (plan.name === 'Platinum') {
+        tagStyle = 'bg-green-700 text-white';
+    }
 
     return (
-        <div className={`bg-white rounded-2xl p-6 shadow-lg w-full relative ${isFeatured ? 'border-2 border-blue-600' : 'border border-slate-200'}`}>
-            {isFeatured && (<span className="absolute top-0 -translate-y-1-2 left-1-2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">Most Popular</span>)}
-            <div className={`absolute top-4 right-[-1px] ${isFeatured ? 'bg-yellow-400' : 'bg-slate-200'} text-black font-bold text-sm px-4 py-1 rounded-l-full`}>{plan.name}</div>
+        <div className={`bg-white rounded-2xl p-6 shadow-lg w-full relative transition-all duration-300 ${borderStyle}`}>
+            {isFeatured && (<span className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-yellow-400 text-black text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">Most Popular</span>)}
+            <div className={`absolute top-4 right-[-1px] font-bold text-sm px-4 py-1 rounded-l-full ${tagStyle}`}>{plan.name}</div>
+            
             <h3 className="text-xl font-black text-left text-black mt-10">GMB SEO MONTHLY PACKAGES</h3>
             <p className="text-left mt-2"><span className="text-4xl font-extrabold text-black">₹{price.toLocaleString('en-IN')}</span><span className="text-gray-500 font-medium">/Month</span></p>
             <div className="flex-grow">
@@ -56,9 +76,13 @@ export default function MobilePricing() {
                         <button onClick={() => setIsYearly(!isYearly)} className={`w-12 h-7 rounded-full p-1 flex items-center transition-colors ${isYearly ? 'bg-blue-600 justify-end' : 'bg-gray-300 justify-start'}`}><span className="w-5 h-5 bg-white rounded-full shadow-md" /></button>
                         <span className={`font-semibold ${isYearly ? 'text-blue-600' : 'text-gray-500'}`}>Yearly <span className="text-xs text-green-500">(Save 50%)</span></span>
                     </div>
+                    {/* --- CARDS KA ORDER YAHAN BADLA GAYA HAI --- */}
                     <div className="mt-8 flex flex-col items-center space-y-8">
-                        <PricingCard plan={plansData.gold} price={getPrice(plansData.gold)} isFeatured={true} isYearly={isYearly} />
+                        {/* Silver ab pehle aayega */}
                         <PricingCard plan={plansData.silver} price={getPrice(plansData.silver)} isYearly={isYearly} />
+                        {/* Gold (Featured) doosre number par aayega */}
+                        <PricingCard plan={plansData.gold} price={getPrice(plansData.gold)} isFeatured={true} isYearly={isYearly} />
+                        {/* Platinum aakhir mein aayega */}
                         <PricingCard plan={plansData.platinum} price={getPrice(plansData.platinum)} isYearly={isYearly} />
                     </div>
                 </Fade>

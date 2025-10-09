@@ -20,7 +20,12 @@ const processSteps = [
     { icon: GlassIcons.provider, title: "Local Service Provider", description: "We submit information in a consistent and accurate manner to different citation sites, following best practices for rich media citations." },
     { icon: GlassIcons.affordable, title: "Affordable Services", description: "We offer citation services at very competitive pricing. Our FAQ section answers all primary questions related to our services." },
     { icon: GlassIcons.timely, title: "Timely Delivery", description: "We save your time by delivering the order in an agreed turnaround time to increase our customer retention rate." },
-    { icon: GlassIcons.agency, title: "Top Marketing Agency", description: "We offer services to top marketing agencies from the USA, UK, Canada, Australia, and many other countries." }
+   { 
+  icon: GlassIcons.agency, 
+  title: "Top Marketing Agency", 
+  // 👇 India yahan add kar diya hai
+  description: "We offer services to top marketing agencies from the USA, UK, Canada, Australia, India, and many other countries." 
+}
 ];
 
 export default function DesktopWorkingWith() {

@@ -26,7 +26,7 @@ const screenshots = [
     alt: "Comparison screenshot of GMB call performance, showing an increase in calls."
   },
   {
-    src: "/images/image copy.png",
+    src: "/images/hg.png",
     alt: "Screenshot of GMB performance overview, displaying business profile views and top search terms."
   }
 ];
