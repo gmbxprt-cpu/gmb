@@ -12,7 +12,6 @@ const CircleCheckIcon = () => (
 
 export default function MobileHero() {
   return (
-    // 👇 Top padding reduced further to pt-6
     <section className="bg-slate-50 w-full md:hidden pt-6 pb-12 overflow-x-hidden">
       <div className="container mx-auto px-4 text-center">
         <Fade direction="up" cascade damping={0.1} triggerOnce>
@@ -24,12 +23,7 @@ export default function MobileHero() {
                 Rank Higher, Get Seen on <span className="text-blue-600">Google Maps</span>
             </h1>
 
-            <div className="mt-6 text-left">
-              <Fade direction="up" delay={100} triggerOnce>
-                <EmbeddedContactForm />
-              </Fade>
-            </div>
-            
+            {/* --- CHANGE: Tick wali list ab upar aa gayi hai --- */}
             <ul className="mt-6 space-y-2 text-md font-semibold text-slate-800 max-w-sm mx-auto">
                 <li className="flex items-center">
                     <CircleCheckIcon />
@@ -45,6 +39,7 @@ export default function MobileHero() {
                 </li>
             </ul>
 
+            {/* --- CHANGE: Buttons bhi ab upar aa gaye hain --- */}
             <div className="mt-6 flex flex-col space-y-2">
                 <Link href="#pricing" className="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-transform hover:scale-105">
                     <span>Choose Your Plan</span>
@@ -54,6 +49,13 @@ export default function MobileHero() {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                     <span>Book A Call</span>
                 </a>
+            </div>
+
+            {/* --- CHANGE: Contact Form ab sabse aakhir mein aa gaya hai --- */}
+            <div className="mt-12 text-left">
+              <Fade direction="up" delay={100} triggerOnce>
+                <EmbeddedContactForm />
+              </Fade>
             </div>
         </Fade>
       </div>

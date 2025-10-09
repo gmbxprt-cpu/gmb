@@ -48,7 +48,12 @@ const processSteps = [
     { key: "provider", title: "Local Service Provider", description: "We submit information in a consistent and accurate manner to different citation sites." },
     { key: "affordable", title: "Affordable Services", description: "We offer citation services at very competitive pricing to fit your budget." },
     { key: "timely", title: "Timely Delivery", description: "We save your time by delivering the order in an agreed turnaround time." },
-    { key: "agency", title: "Top Marketing Agency", description: "We offer services to top marketing agencies from the USA, UK, Canada, and Australia." }
+  { 
+  key: "agency", 
+  title: "Top Marketing Agency", 
+  // 👇 India yahan add kar diya hai
+  description: "We offer services to top marketing agencies from the USA, UK, Canada, Australia, India, and many other countries." 
+}
 ];
 
 export default function MobileWorkingWith() {
