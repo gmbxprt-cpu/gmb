@@ -50,29 +50,35 @@ export default function EmbeddedContactForm() {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="hero-name" className="sr-only">Name</label>
-            <input type="text" name="name" id="hero-name" required placeholder="Your Name" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400"/>
+            <label htmlFor="hero-name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            {/* 👇 Typed text ko dark karne ke liye 'text-gray-900' add kiya hai */}
+            <input type="text" name="name" id="hero-name" required placeholder="Your Name" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
           </div>
           <div>
-            <label htmlFor="hero-email" className="sr-only">Email</label>
-            <input type="email" name="email" id="hero-email" required placeholder="Your Email" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400"/>
+            <label htmlFor="hero-email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            {/* 👇 Typed text ko dark karne ke liye 'text-gray-900' add kiya hai */}
+            <input type="email" name="email" id="hero-email" required placeholder="Your Email" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
           </div>
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="hero-contact" className="sr-only">Contact</label>
-            <input type="tel" name="contact" id="hero-contact" required placeholder="Contact Number" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400"/>
+            <label htmlFor="hero-contact" className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
+            {/* 👇 Typed text ko dark karne ke liye 'text-gray-900' add kiya hai */}
+            <input type="tel" name="contact" id="hero-contact" required placeholder="Contact Number" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
           </div>
           <div>
-            <label htmlFor="hero-gmb" className="sr-only">GMB Link</label>
-            <input type="url" name="gmbLink" id="hero-gmb" required placeholder="GMB Profile Link" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400"/>
+            <label htmlFor="hero-gmb" className="block text-sm font-medium text-gray-700 mb-1">GMB Link</label>
+            {/* 👇 Typed text ko dark karne ke liye 'text-gray-900' add kiya hai */}
+            <input type="url" name="gmbLink" id="hero-gmb" required placeholder="GMB Profile Link" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
           </div>
         </div>
         
         <div>
-          <select name="interest" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 text-slate-500">
-            <option value="">Interested in...</option>
+          <label htmlFor="hero-interest" className="block text-sm font-medium text-gray-700 mb-1">Service of Interest</label>
+           {/* 👇 Selected option ke text ko dark karne ke liye 'text-gray-900' add kiya hai */}
+          <select id="hero-interest" name="interest" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 focus:ring-blue-500 focus:border-blue-500">
+            <option value="" className="text-slate-500">Select an option...</option>
             <option value="GMB SEO">GMB SEO</option>
             <option value="NEW LISTING">New Listing</option>
             <option value="PHONE NUMBER UPDATION">Phone Number Updation</option>
@@ -81,7 +87,11 @@ export default function EmbeddedContactForm() {
           </select>
         </div>
         {showOther && (
-            <input type="text" name="other" placeholder="Please Specify" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400"/>
+            <div>
+              <label htmlFor="hero-other" className="block text-sm font-medium text-gray-700 mb-1">Please Specify</label>
+               {/* 👇 Typed text ko dark karne ke liye 'text-gray-900' add kiya hai */}
+              <input id="hero-other" type="text" name="other" placeholder="Specify your requirement" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
+            </div>
         )}
         <div>
           <button type="submit" disabled={status === 'sending'} className="w-full justify-center rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 py-3 px-4 text-white font-semibold hover:opacity-90 disabled:bg-slate-400 shadow-lg">

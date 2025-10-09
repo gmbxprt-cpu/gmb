@@ -80,30 +80,34 @@ export default function DesktopContactForm() {
           <div>
             <Fade direction="up" triggerOnce>
               <div className="bg-white p-8 rounded-lg shadow-lg border border-slate-200">
-                {/* Form code remains the same... */}
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-slate-800">Name</label>
-                      <input type="text" name="name" id="name" required className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+                      {/* 👇 Color classes add kar di hain */}
+                      <input type="text" name="name" id="name" required placeholder="Your Name" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                     </div>
                      <div>
                       <label htmlFor="email-contact" className="block text-sm font-medium text-slate-800">Email</label>
-                      <input type="email" name="email" id="email-contact" required className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+                      {/* 👇 Color classes add kar di hain */}
+                      <input type="email" name="email" id="email-contact" required placeholder="Your Email" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                     </div>
                   </div>
                   <div>
                     <label htmlFor="contact" className="block text-sm font-medium text-slate-800">Contact Number</label>
-                    <input type="tel" name="contact" id="contact" required className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+                    {/* 👇 Color classes add kar di hain */}
+                    <input type="tel" name="contact" id="contact" required placeholder="123-45-678" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                   </div>
                   <div>
                     <label htmlFor="gmbLink" className="block text-sm font-medium text-slate-800">GMB Profile Link</label>
-                    <input type="url" name="gmbLink" id="gmbLink" required className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+                    {/* 👇 Color classes add kar di hain */}
+                    <input type="url" name="gmbLink" id="gmbLink" required placeholder="https://maps.app.goo.gl/..." className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                   </div>
                   <div>
                     <label htmlFor="interest" className="block text-sm font-medium text-slate-800">Are you interested in?</label>
-                    <select name="interest" id="interest" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500">
-                      <option value="">Select a service</option>
+                    {/* 👇 Color class add kar di hai */}
+                    <select name="interest" id="interest" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 focus:ring-blue-500 focus:border-blue-500">
+                      <option value="" className="text-slate-500">Select a service</option>
                       <option value="GMB SEO">GMB SEO</option>
                       <option value="NEW LISTING">New Listing</option>
                       <option value="PHONE NUMBER UPDATION">Phone Number Updation</option>
@@ -114,7 +118,8 @@ export default function DesktopContactForm() {
                   {showOther && (
                     <div>
                       <label htmlFor="other" className="block text-sm font-medium text-slate-800">Please Specify</label>
-                      <input type="text" name="other" id="other" required className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+                      {/* 👇 Color classes add kar di hain */}
+                      <input type="text" name="other" id="other" required placeholder="Specify your need" className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
                     </div>
                   )}
                   <div>

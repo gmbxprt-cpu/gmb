@@ -10,8 +10,8 @@ const WhatsAppIcon = () => <svg className="w-4 h-4 mr-1.5" fill="currentColor" v
 
 const PricingCard = ({ plan, price, isFeatured = false, isYearly }) => {
     const phoneNumber = "917009364216";
-    const whatsappMessage = `Hello GMB Expert, I am interested in the "${plan.name}" ${isYearly ? 'Yearly' : 'Monthly'} plan.`;
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+    // 👇 URL se message (text) wala part hata diya hai
+    const whatsappUrl = `https://wa.me/${phoneNumber}`;
 
     return (
         <div className={`bg-white rounded-2xl p-6 shadow-lg w-full relative ${isFeatured ? 'border-2 border-blue-600' : 'border border-slate-200'}`}>
@@ -23,7 +23,6 @@ const PricingCard = ({ plan, price, isFeatured = false, isYearly }) => {
                 <ul className="mt-6 space-y-3 text-left">
                   {allPricingFeatures.map(feature => {
                         const featureValue = plan.features[feature.key];
-                        // 👇 Alignment fixed using flexbox
                         if (featureValue === false) { return ( <li key={feature.key} className="flex items-start text-slate-400 line-through"><CrossIcon /><span className="ml-3">{feature.text}</span></li> ); }
                         if (featureValue === true) { return ( <li key={feature.key} className="flex items-start text-slate-800 font-medium"><CheckIcon /><span className="ml-3">{feature.text}</span></li> ); }
                         return ( <li key={feature.key} className="flex items-start text-slate-800 font-medium"><CheckIcon /><span className="ml-3">{feature.text.replace(/Keywords|Months/g, '').trim()}: <span className="font-bold text-blue-600">{featureValue}</span></span></li> );

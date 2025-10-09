@@ -48,20 +48,25 @@ export default function HeroLeadForm() {
       <p className="text-center text-slate-500 mb-6">Submit your details to get started.</p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <input type="text" name="name" required placeholder="Your Name" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+          {/* 👇 Color classes add kar di hain */}
+          <input type="text" name="name" required placeholder="Your Name" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         </div>
         <div>
-          <input type="email" name="email" required placeholder="Your Email" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+          {/* 👇 Color classes add kar di hain */}
+          <input type="email" name="email" required placeholder="Your Email" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         </div>
         <div>
-          <input type="tel" name="contact" required placeholder="Contact Number" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+          {/* 👇 Color classes add kar di hain */}
+          <input type="tel" name="contact" required placeholder="Contact Number" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         </div>
         <div>
-          <input type="url" name="gmbLink" required placeholder="GMB Profile Link" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+          {/* 👇 Color classes add kar di hain */}
+          <input type="url" name="gmbLink" required placeholder="GMB Profile Link" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         </div>
         <div>
-          <select name="interest" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 text-slate-500">
-            <option value="">Interested in...</option>
+          {/* 👇 Color class add kar di hai */}
+          <select name="interest" required onChange={(e) => setShowOther(e.target.value === 'OTHER')} className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 focus:ring-blue-500 focus:border-blue-500">
+            <option value="" className="text-slate-500">Interested in...</option>
             <option value="GMB SEO">GMB SEO</option>
             <option value="NEW LISTING">New Listing</option>
             <option value="PHONE NUMBER UPDATION">Phone Number Updation</option>
@@ -70,7 +75,8 @@ export default function HeroLeadForm() {
           </select>
         </div>
         {showOther && (
-            <input type="text" name="other" placeholder="Please Specify" className="w-full rounded-md border-slate-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"/>
+            // 👇 Color classes add kar di hain
+            <input type="text" name="other" placeholder="Please Specify" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
         )}
         <div>
           <button type="submit" disabled={status === 'sending'} className="w-full justify-center rounded-md bg-blue-600 py-3 px-4 text-white font-semibold hover:bg-blue-700 disabled:bg-slate-400">

@@ -1,20 +1,22 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const SocialIcon = ({ href, 'aria-label': ariaLabel, children }) => (
-  <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel} className="text-slate-400 hover:text-blue-400 transition-colors">
-    {children}
-  </a>
+// Instagram Icon SVG
+const InstagramIcon = () => (
+  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z" />
+  </svg>
 );
+
 
 export default function MobileFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white md:hidden">
+    // 👇 Background color ko 'bg-black' kar diya hai
+    <footer className="bg-black text-white md:hidden">
       <div className="max-w-7xl mx-auto px-6 py-6">
         
-        {/* 👇 Yahan 'grid grid-cols-2' ko 'flex justify-between' se badal diya hai */}
         <div className="flex justify-between items-start">
           {/* Left Column: Brand, Contact, Address */}
           <div>
@@ -22,6 +24,7 @@ export default function MobileFooter() {
               <div className="relative h-8 w-8 flex-shrink-0">
                 <Image src="/images/logo.png" alt="GMB Expert Logo" fill className="object-contain" />
               </div>
+              {/* 👇 Heading pehle se hi multi-color hai */}
               <span className="text-xl font-extrabold tracking-tight whitespace-nowrap">
                 <span className="text-blue-500">G</span><span className="text-red-500">M</span><span className="text-yellow-400">B</span> <span className="text-green-500">Expert</span>
               </span>
@@ -44,7 +47,8 @@ export default function MobileFooter() {
 
           {/* Right Column: Quick Links */}
           <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider pb-2 border-b-2 border-blue-500 inline-block">Quick Links</h3>
+            {/* 👇 "Quick Links" heading ko halka white ('text-slate-200') kar diya hai */}
+            <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider pb-2 border-b-2 border-blue-500 inline-block">Quick Links</h3>
             <ul className="mt-3 space-y-2 text-sm">
               <li><Link href="#" className="text-slate-400 hover:text-white">Home</Link></li>
               <li><Link href="#services" className="text-slate-400 hover:text-white">Services</Link></li>
@@ -56,10 +60,18 @@ export default function MobileFooter() {
         </div>
 
         <div className="mt-6 pt-6 border-t border-gray-700">
-          <div className="flex justify-center space-x-6">
-            <SocialIcon href="#" aria-label="Facebook"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.59 0 0 .59 0 1.325v21.35C0 23.41.59 24 1.325 24H12.82v-9.29h-3.128v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.735 0 1.325-.59 1.325-1.325V1.325C24 .59 23.41 0 22.675 0z"/></svg></SocialIcon>
-            <SocialIcon href="#" aria-label="Twitter"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616v.064c0 2.296 1.634 4.208 3.803 4.649-.623.169-1.282.203-1.943.163.599 1.954 2.338 3.296 4.402 3.332-1.734 1.35-3.921 2.162-6.327 2.162-.41 0-.814-.024-1.21-.072 2.189 1.407 4.843 2.238 7.748 2.238 9.283 0 14.379-7.697 14.02-14.386.972-.701 1.815-1.583 2.484-2.585z"/></svg></SocialIcon>
-            <SocialIcon href="#" aria-label="LinkedIn"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></SocialIcon>
+          {/* 👇 Social icons ko hatakar ek naya Instagram button bana diya hai */}
+          <div className="flex justify-center">
+            <a 
+              href="https://www.instagram.com/gmb.expert.seo/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              aria-label="Follow us on Instagram" 
+              className="inline-flex items-center space-x-3 py-2 px-5 rounded-full font-semibold text-white bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:opacity-90 transition-opacity"
+            >
+              <InstagramIcon />
+              <span>Follow on Instagram</span>
+            </a>
           </div>
           <div className="mt-6 text-center text-slate-400 text-xs">
             <p>&copy; {currentYear} GMB Expert. All Rights Reserved.</p>

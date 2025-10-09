@@ -9,8 +9,8 @@ const WhatsAppIcon = () => <svg className="w-5 h-5 mr-2" fill="currentColor" vie
 
 const PricingCard = ({ plan, price, isFeatured = false, isYearly }) => {
     const phoneNumber = "917009364216";
-    const whatsappMessage = `Hello GMB Expert, I am interested in the "${plan.name}" ${isYearly ? 'Yearly' : 'Monthly'} plan.`;
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+    // 👇 URL se message (text) wala part hata diya hai
+    const whatsappUrl = `https://wa.me/${phoneNumber}`;
 
     return (
         <div className={`relative bg-white rounded-2xl p-8 flex flex-col shadow-lg transition-all duration-300 ${isFeatured ? 'border-2 border-blue-600 transform scale-105' : 'border border-slate-200'}`}>
