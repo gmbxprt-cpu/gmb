@@ -15,7 +15,7 @@
     "@sanity/vision": "^4.10.3",
     "framer-motion": "^12.23.22",
     "next": "15.5.4",
-    "next-sanity": "^9.12.3",
+    "next-sanity": "^5.4.6",
     "nodemailer": "^7.0.7",
     "react": "19.1.0",
     "react-awesome-reveal": "^4.3.1",
