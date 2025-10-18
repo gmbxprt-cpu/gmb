@@ -96,7 +96,7 @@ export default function MobileHeader() {
                   <motion.li variants={itemVariants}><a href="#services" onClick={toggleMenu} className="flex items-center space-x-4 py-3 px-3 text-lg font-semibold text-slate-200 hover:bg-slate-800 rounded-md">{NavDrawerIcons.services} <span>Services</span></a></motion.li>
                   <motion.li variants={itemVariants}><a href="#pricing" onClick={toggleMenu} className="flex items-center space-x-4 py-3 px-3 text-lg font-semibold text-slate-200 hover:bg-slate-800 rounded-md">{NavDrawerIcons.pricing} <span>Pricing</span></a></motion.li>
                   <motion.li variants={itemVariants}><a href="#faq" onClick={toggleMenu} className="flex items-center space-x-4 py-3 px-3 text-lg font-semibold text-slate-200 hover:bg-slate-800 rounded-md">{NavDrawerIcons.faq} <span>FAQ</span></a></motion.li>
-                  <motion.li variants={itemVariants}><a href="#blog" onClick={toggleMenu} className="flex items-center space-x-4 py-3 px-3 text-lg font-semibold text-slate-200 hover:bg-slate-800 rounded-md">{NavDrawerIcons.blog} <span>Blog</span></a></motion.li>
+                  <motion.li variants={itemVariants}><a href="/blogs" onClick={toggleMenu} className="flex items-center space-x-4 py-3 px-3 text-lg font-semibold text-slate-200 hover:bg-slate-800 rounded-md">{NavDrawerIcons.blog} <span>Blogs</span></a></motion.li>
                 </ul>
               </motion.nav>
             </>

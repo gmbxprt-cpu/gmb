@@ -16,7 +16,8 @@ export default function MobileHero() {
       <div className="container mx-auto px-4 text-center">
         <Fade direction="up" cascade damping={0.1} triggerOnce>
             <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1.5 rounded-full inline-block">
-                Google My Business Optimization
+            GMB Expert - Local Seo Specialist
+
             </span>
             
             <h1 className="mt-4 text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">

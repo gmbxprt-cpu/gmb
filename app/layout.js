@@ -14,10 +14,10 @@ const poppins = Poppins({
 export const metadata = {
   metadataBase: new URL('https://www.gmb.expert'),
   title: {
-    default: 'GMB Expert: Google Business Profile SEO & Ranking Services',
+    default: 'GMB Expert: Google Business Profile Expert & Local SEO Specialist',
     template: '%s | GMB Expert',
   },
-  description: 'Dominate local search with GMB Expert. We offer Google My Business (GMB) SEO, optimization, profile recovery, and ranking services to get you more customers.',
+  description: 'As the #1 GMB Expert and Google My Business SEO Specialist, we help local businesses rank higher on Google, recover suspended profiles, and optimize Google Business listings for maximum visibility. Partner with a trusted Local SEO and Google Business Profile expert to grow your presence and attract real customers.',
   openGraph: {
     title: 'GMB Expert: Rank Higher on Google Maps',
     description: 'Specialized GMB SEO and optimization services.',

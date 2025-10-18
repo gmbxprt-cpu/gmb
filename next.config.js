@@ -4,10 +4,15 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.pexels.com',
+        hostname: 'images.pexels.com'
       },
-    ],
-  },
-};
+      // allow Sanity CDN
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io'
+      }
+    ]
+  }
+}
 
 module.exports = nextConfig;

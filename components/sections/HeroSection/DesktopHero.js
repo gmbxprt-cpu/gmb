@@ -21,7 +21,7 @@ export default function DesktopHero() {
           <div>
             <Fade direction="up" cascade damping={0.1} triggerOnce>
               <span className="bg-yellow-400 text-gray-900 text-sm font-bold px-4 py-2 rounded-md">
-                Google My Business Optimization
+                GMB Expert - Local Seo Specialist
               </span>
               
               <h1 className="mt-6 text-5xl font-black text-gray-900 tracking-tight leading-tight">

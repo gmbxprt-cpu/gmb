@@ -2,8 +2,8 @@ import HomePageClient from './HomePageClient';
 
 // METADATA: Title aur description SEO ke liye aache hain, isliye inko nahi badla.
 export const metadata = {
-  title: 'GMB Expert – Google My Business SEO & Ranking Partner',
-  description: 'As a #1 GMB Expert and Google My Business SEO Specialist, we offer trusted services to boost your Google ranking, recover suspended profiles, and optimize your listings for maximum local visibility.',
+  title: 'GMB Expert: Google Business Profile Expert & Local SEO Specialist',
+  description: 'As the #1 GMB Expert and Google My Business SEO Specialist, we help local businesses rank higher on Google, recover suspended profiles, and optimize Google Business listings for maximum visibility. Partner with a trusted Local SEO and Google Business Profile expert to grow your presence and attract real customers.',
   alternates: {
     canonical: '/',
   },
