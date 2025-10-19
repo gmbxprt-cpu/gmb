@@ -4,7 +4,7 @@ import { PortableText } from "@portabletext/react";
 import { client } from "../../studio/lib/sanity.client"; // adjust path if different
 import { urlFor } from "../../studio/lib/urlFor"; // adjust path if different
 
-// Import your existing WhatsApp button (the one in components/common/WhatsAppButton.js)
+// Optional: import your WhatsApp floating button (if present)
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 
 export default async function PostPage({ params }) {
@@ -25,16 +25,17 @@ export default async function PostPage({ params }) {
 
   const components = {
     types: {
+      // render images inside the Portable Text
       image: ({ value }) => {
         if (!value?.asset) return null;
         const src = urlFor(value).width(1200).auto("format").url();
         const alt = value.alt || value.caption || "";
         return (
-          <figure className="my-8">
+          <figure className="my-8 w-full">
             <img
               src={src}
               alt={alt}
-              className="w-full rounded-lg object-cover max-h-[700px]"
+              className="w-full object-cover rounded-none max-h-[700px]"
             />
             {value.caption && (
               <figcaption className="text-sm text-gray-500 mt-2">
@@ -43,26 +44,27 @@ export default async function PostPage({ params }) {
             )}
           </figure>
         );
-      },
+      }
     },
     block: {
       h1: ({ children }) => (
-        <h1 className="text-4xl md:text-5xl font-extrabold mt-2 mb-6 leading-tight">
+        // remove top margin and left-align
+        <h1 className="text-4xl md:text-5xl font-extrabold mt-0 mb-4 leading-tight text-left">
           {children}
         </h1>
       ),
       h2: ({ children }) => (
-        <h2 className="text-3xl md:text-4xl font-bold mt-8 mb-5 leading-tight">
+        <h2 className="text-3xl md:text-4xl font-bold mt-6 mb-4 leading-tight text-left">
           {children}
         </h2>
       ),
       h3: ({ children }) => (
-        <h3 className="text-2xl md:text-3xl font-semibold mt-6 mb-4 leading-tight">
+        <h3 className="text-2xl md:text-3xl font-semibold mt-6 mb-4 leading-tight text-left">
           {children}
         </h3>
       ),
       normal: ({ children }) => (
-        <p className="text-base md:text-lg leading-relaxed text-slate-800 mb-4">
+        <p className="text-base md:text-lg leading-relaxed text-slate-800 mb-4 text-left">
           {children}
         </p>
       ),
@@ -70,24 +72,16 @@ export default async function PostPage({ params }) {
         <blockquote className="border-l-4 border-slate-300 pl-4 italic text-slate-600 my-6">
           {children}
         </blockquote>
-      ),
+      )
     },
     list: {
-      bullet: ({ children }) => (
-        <ul className="list-disc list-inside space-y-2 my-4">{children}</ul>
-      ),
-      number: ({ children }) => (
-        <ol className="list-decimal list-inside space-y-2 my-4">{children}</ol>
-      ),
+      bullet: ({ children }) => <ul className="list-disc list-inside space-y-2 my-4">{children}</ul>,
+      number: ({ children }) => <ol className="list-decimal list-inside space-y-2 my-4">{children}</ol>
     },
     marks: {
       strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
       em: ({ children }) => <em className="italic">{children}</em>,
-      code: ({ children }) => (
-        <code className="bg-slate-100 px-1 py-0.5 rounded text-sm font-mono">
-          {children}
-        </code>
-      ),
+      code: ({ children }) => <code className="bg-slate-100 px-1 py-0.5 rounded text-sm font-mono">{children}</code>,
       link: ({ children, value }) => {
         const href = value?.href || "";
         const isExternal = href && !href.startsWith("/");
@@ -101,8 +95,8 @@ export default async function PostPage({ params }) {
             {children}
           </a>
         );
-      },
-    },
+      }
+    }
   };
 
   // WhatsApp phone - keep international format WITHOUT plus sign
@@ -111,35 +105,57 @@ export default async function PostPage({ params }) {
 
   return (
     <>
-      {/* Reduce top gap: use pt-6 on small screens, larger top padding on md+: pt-12 */}
-      <article className="max-w-4xl mx-auto pt-6 md:pt-12 pb-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4">{post.title}</h1>
+      {/* Article container: no left/right padding (px-0) and no top padding (pt-0) */}
+      <article className="w-full max-w-none mx-0 px-0 pt-0 pb-10">
+        {/* Title & meta */}
+        <div className="w-full px-0"> 
+          <h1 className="text-4xl md:text-5xl font-extrabold mt-0 mb-2 leading-tight text-left">
+            {post.title}
+          </h1>
 
-        {post.publishedAt && (
-          <p className="text-gray-500 mb-6">
-            {new Date(post.publishedAt).toLocaleDateString()}
-          </p>
-        )}
+          {post.publishedAt && (
+            <p className="text-gray-500 mb-6 text-left">
+              {new Date(post.publishedAt).toLocaleDateString()}
+            </p>
+          )}
+        </div>
 
-        {/* main image */}
+        {/* Main hero image (if exists) - full width, no side gaps */}
         {post.mainImage?.url && (
-          <div className="mb-8">
+          <div className="mb-6 w-full px-0">
             <img
               src={post.mainImage.url}
               alt={post.title}
-              className="w-full rounded-xl object-cover"
+              className="w-full rounded-none object-cover"
             />
           </div>
         )}
 
-        <div className="prose prose-lg max-w-none">
+        {/* Portable Text content - no side gap (px-0) and left-aligned text */}
+        <div className="prose prose-lg max-w-none px-0 text-left">
           <PortableText value={post.body} components={components} />
         </div>
       </article>
 
-      {/* Reuse your existing WhatsApp component (keeps its animation and safe-area handling).
-          Pass phoneNumber prop only if your component accepts it. If not, remove prop. */}
-      <WhatsAppButton phoneNumber={phoneNumber} />
+      {/* Floating WhatsApp button (uses your component if available) */}
+      {/* If your WhatsAppButton component handles positioning, use that. Otherwise use the fallback link below. */}
+      {typeof WhatsAppButton !== "undefined" ? (
+        <WhatsAppButton phoneNumber={phoneNumber} />
+      ) : (
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat on WhatsApp"
+          className="fixed z-[9999] right-4 bottom-6"
+        >
+          <span className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg">
+            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fillRule="evenodd" clipRule="evenodd" d="M12.04 2.16c-5.49 0-9.94 4.45-9.94 9.94 0 1.96.58 3.82 1.63 5.43l-1.68 5.67 5.8-1.55c1.51.87 3.2 1.34 4.19 1.34h.02c5.49 0 9.94-4.45 9.94-9.94 0-2.67-1.04-5.18-2.92-7.06-1.88-1.88-4.39-2.92-7.06-2.92zM12.04 20.89c-1.6 0-3.11-.47-4.43-1.34l-.27-.16-2.78.74.75-2.73-.18-.28c-.97-1.49-1.52-3.2-1.52-4.99.01-4.75 3.86-8.61 8.61-8.61 2.3 0 4.46.9 6.09 2.53 1.63 1.63 2.53 3.8 2.53 6.09.01 4.75-3.86 8.61-8.61 8.61z" fill="#fff"/>
+            </svg>
+          </span>
+        </a>
+      )}
     </>
   );
 }

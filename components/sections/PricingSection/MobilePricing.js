@@ -14,11 +14,9 @@ const CrossIcon = () => (
     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
   </svg>
 );
-
-/* phone + whatsapp icons for mobile buttons */
 const PhoneIcon = () => (
   <svg className="w-4 h-4 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.09 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.61 2.62a2 2 0 0 1-.45 2.11L8.91 9.91a13.64 13.64 0 0 0 6 6l1.46-1.46a2 2 0 0 1 2.11-.45c.84.28 1.72.49 2.62.61A2 2 0 0 1 22 16.92z" fill="currentColor"/>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.09 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.61 2.62a2 2 0 0 1-.45 2.11L8.91 9.91a13.64 13.64 0 0 0 6 6l1.46-1.46a2 2 0 0 1 2.11-.45c.84.28 1.72.49 2.62.61A2 2 0 0 1 22 16.92z" fill="currentColor" />
   </svg>
 );
 const WhatsAppIcon = () => (
@@ -27,12 +25,48 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
-/* ---------- Mobile Pricing Card Component ---------- */
+/* ---------- Country detection helper (edge-first + fallbacks) ---------- */
+async function fetchCountryEdgeFirst() {
+  try {
+    // try edge API first (if you implemented /api/geo)
+    const r = await fetch("/api/geo", { cache: "no-store" });
+    if (r.ok) {
+      const j = await r.json();
+      const c = (j?.country || "").toUpperCase();
+      if (c) return c;
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  // fallback 1
+  try {
+    const r2 = await fetch("https://ipwhois.app/json/");
+    if (r2.ok) {
+      const j2 = await r2.json();
+      const c2 = (j2?.country_code || j2?.country || "").toUpperCase();
+      if (c2) return c2;
+    }
+  } catch (e) { /* ignore */ }
+
+  // fallback 2
+  try {
+    const r3 = await fetch("https://ipapi.co/json/");
+    if (r3.ok) {
+      const j3 = await r3.json();
+      const c3 = (j3?.country || j3?.country_code || "").toUpperCase();
+      if (c3) return c3;
+    }
+  } catch (e) { /* ignore */ }
+
+  return null;
+}
+
+/* ---------- Mobile Pricing Card ---------- */
 const MobilePricingCard = ({ plan, numericPrice, currency, isFeatured = false, isYearly, isIndia }) => {
-  const phoneNumber = "917009364216"; // local variable
-  // optional message for WhatsApp (only used for non-India)
-  const whatsappMessage = `Hello GMB Expert, I'm interested in the "${plan.name}" ${isYearly ? "Yearly" : "Monthly"} plan.`;
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  const phoneNumber = "917009364216";
+  const whatsappUrl = `https://wa.me/${phoneNumber}`; // NO prefilled message
+
   const formatted = currency === "INR" ? `₹${numericPrice.toLocaleString("en-IN")}` : `$${numericPrice}`;
 
   let borderStyle = "border border-slate-200";
@@ -87,8 +121,7 @@ const MobilePricingCard = ({ plan, numericPrice, currency, isFeatured = false, i
               <li key={feature.key} className="flex items-start text-slate-800 font-medium">
                 <CheckIcon />
                 <span className="ml-3">
-                  {feature.text.replace(/Keywords|Months/g, "").trim()}:{" "}
-                  <span className="font-bold text-blue-600">{featureValue}</span>
+                  {feature.text.replace(/Keywords|Months/g, "").trim()}: <span className="font-bold text-blue-600">{featureValue}</span>
                 </span>
               </li>
             );
@@ -96,7 +129,6 @@ const MobilePricingCard = ({ plan, numericPrice, currency, isFeatured = false, i
         </ul>
       </div>
 
-      {/* Buttons: show CALL only for India, WhatsApp only for others */}
       <div className="mt-6 grid grid-cols-1 gap-3">
         {isIndia ? (
           <a
@@ -125,44 +157,66 @@ const MobilePricingCard = ({ plan, numericPrice, currency, isFeatured = false, i
 /* ---------- Main MobilePricing ---------- */
 export default function MobilePricing() {
   const [isYearly, setIsYearly] = useState(false);
-  const [isIndia, setIsIndia] = useState(true);
+  const [country, setCountry] = useState(null); // e.g., "IN"
   const [currency, setCurrency] = useState("INR");
 
   useEffect(() => {
-    const detectCountry = async () => {
+    const CACHE_KEY = "gmb_geo_cache_v1";
+    const CACHE_TTL = 1000 * 60 * 60 * 24; // 24 hours
+
+    const cached = (() => {
       try {
-        const res = await fetch("https://ipapi.co/json/");
-        const data = await res.json();
-        if (data.country_code && data.country_code !== "IN") {
-          setIsIndia(false);
-          setCurrency("USD");
-        } else {
-          setIsIndia(true);
-          setCurrency("INR");
+        const raw = localStorage.getItem(CACHE_KEY);
+        if (!raw) return null;
+        const obj = JSON.parse(raw);
+        if (!obj || !obj.ts) return null;
+        if (Date.now() - obj.ts > CACHE_TTL) {
+          localStorage.removeItem(CACHE_KEY);
+          return null;
         }
-      } catch (err) {
-        // fallback to India
-        setIsIndia(true);
-        setCurrency("INR");
-        console.warn("Country detection failed, defaulting to INR", err);
+        return obj;
+      } catch {
+        return null;
       }
-    };
-    detectCountry();
+    })();
+
+    if (cached && cached.country) {
+      setCountry(cached.country);
+      setCurrency(cached.country === "IN" ? "INR" : "USD");
+      return;
+    }
+
+    let mounted = true;
+    (async () => {
+      const c = await fetchCountryEdgeFirst();
+      if (!mounted) return;
+      const resolved = (c || "").toUpperCase() || null;
+      setCountry(resolved);
+      setCurrency(resolved === "IN" ? "INR" : "USD");
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ country: resolved, ts: Date.now() }));
+      } catch (e) {
+        // ignore
+      }
+    })();
+
+    return () => { mounted = false; };
   }, []);
 
-  // USD fixed prices
+  // USD fixed prices for non-India
   const usdFixed = { Silver: 149, Gold: 249, Platinum: 399 };
 
   const computeNumericPrice = (plan) => {
     if (currency === "INR") {
-      // use original price from plansData (assumed numeric)
-      const base = plan.price ?? (plan.name === "Silver" ? 9999 : plan.name === "Gold" ? 14999 : 24999);
+      const base = Number(plan.price ?? 0);
       return isYearly ? Math.round(base * 0.5) : base;
     } else {
-      const baseUsd = usdFixed[plan.name] ?? 0;
+      const baseUsd = Number(usdFixed[plan.name] ?? 0);
       return isYearly ? Math.round(baseUsd * 0.5) : baseUsd;
     }
   };
+
+  const isIndia = country === "IN";
 
   return (
     <section className="bg-slate-50 py-10 md:hidden" id="pricing-mobile">
