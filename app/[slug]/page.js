@@ -38,7 +38,7 @@ export default async function PostPage({ params }) {
               className="w-full object-cover rounded-none max-h-[700px]"
             />
             {value.caption && (
-              <figcaption className="text-sm text-gray-500 mt-2">
+              <figcaption className="text-sm mt-2 caption-lite">
                 {value.caption}
               </figcaption>
             )}
@@ -64,12 +64,12 @@ export default async function PostPage({ params }) {
         </h3>
       ),
       normal: ({ children }) => (
-        <p className="text-base md:text-lg leading-relaxed text-slate-800 mb-4 text-left">
+        <p className="text-base md:text-lg leading-relaxed mb-4 text-left">
           {children}
         </p>
       ),
       blockquote: ({ children }) => (
-        <blockquote className="border-l-4 border-slate-300 pl-4 italic text-slate-600 my-6">
+        <blockquote className="blockquote-lite border-l-4 pl-4 italic my-6">
           {children}
         </blockquote>
       )
@@ -90,7 +90,7 @@ export default async function PostPage({ params }) {
             href={href}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noopener noreferrer" : undefined}
-            className="text-blue-600 hover:underline"
+            className="link-lite hover:underline"
           >
             {children}
           </a>
@@ -105,10 +105,46 @@ export default async function PostPage({ params }) {
 
   return (
     <>
-      {/* Article container: no left/right padding (px-0) and no top padding (pt-0) */}
-      <article className="w-full max-w-none mx-0 px-0 pt-0 pb-10">
+      {/* === Inline CSS that ensures readable colors in light + dark modes ===
+          - .post-article scope keeps styles local
+          - Uses prefers-color-scheme media query, so it adapts automatically
+      */}
+      <style>{`
+        /* Default / Light mode */
+        .post-article {
+          color: #0f172a; /* slate-900 - good contrast on light bg */
+        }
+        .post-article .link-lite { color: #0b72a6; } /* blue for links */
+        .post-article .caption-lite { color: #475569; font-size: 0.95rem; }
+        .post-article .blockquote-lite { border-color: #e2e8f0; color: #475569; background: transparent; padding-left: 0.75rem; }
+
+        /* Improve readability for images (no filter) */
+        .post-article img { filter: none; }
+
+        /* Dark mode overrides */
+        @media (prefers-color-scheme: dark) {
+          .post-article {
+            color: #e6eef8; /* light text on dark bg */
+          }
+          .post-article .link-lite { color: #7fcdff; } /* lighter blue in dark */
+          .post-article .caption-lite { color: #cbd5e1; }
+          .post-article .blockquote-lite { border-color: #334155; color: #cbd5e1; }
+          /* ensure code block contrast */
+          .post-article code { background: rgba(255,255,255,0.03); color: #e6eef8; }
+        }
+
+        /* Optional: increase line-height for better mobile reading */
+        .post-article p, .post-article li { line-height: 1.8; }
+
+        /* Make sure .prose doesn't apply theme-incompatible colors if using tailwind-typography */
+        .post-article :where(.prose) { color: inherit; }
+        .post-article :where(.prose) a { color: inherit; } /* link-lite class used instead */
+      `}</style>
+
+      {/* Article container: full width, no left/right padding (px-0) and no top padding (pt-0) */}
+      <article className="post-article w-full max-w-none mx-0 px-0 pt-0 pb-10">
         {/* Title & meta */}
-        <div className="w-full px-0"> 
+        <div className="w-full px-0">
           <h1 className="text-4xl md:text-5xl font-extrabold mt-0 mb-2 leading-tight text-left">
             {post.title}
           </h1>
@@ -138,7 +174,6 @@ export default async function PostPage({ params }) {
       </article>
 
       {/* Floating WhatsApp button (uses your component if available) */}
-      {/* If your WhatsAppButton component handles positioning, use that. Otherwise use the fallback link below. */}
       {typeof WhatsAppButton !== "undefined" ? (
         <WhatsAppButton phoneNumber={phoneNumber} />
       ) : (
@@ -148,6 +183,7 @@ export default async function PostPage({ params }) {
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"
           className="fixed z-[9999] right-4 bottom-6"
+          style={{ WebkitTapHighlightColor: "transparent" }}
         >
           <span className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg">
             <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
