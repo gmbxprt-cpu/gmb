@@ -1,18 +1,18 @@
 // app/sitemap.js
 import { client } from "../studio/lib/sanity.client";
 
-// ✅ Adjust this based on your site structure
+export const revalidate = 43200; // Revalidate every 12 hours
+
+// ✅ Define your static routes here
 const STATIC_ROUTES = [
-  "/",           // home
-  "/blogs",
+  "/",          // Home
+  "/blogs",     // Blog listing page
 ];
 
-export const revalidate = 43200; // every 12 hours
-
 export default async function sitemap() {
-  // ✅ Detect environment automatically
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
+  // ✅ Determine correct base URL (handles local, Vercel preview, and production)
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
     (process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : "https://www.gmb.expert");
@@ -24,18 +24,18 @@ export default async function sitemap() {
   }`;
   const posts = await client.fetch(query);
 
-  // ✅ Build Sanity blog URLs
+  // ✅ Build dynamic blog URLs
   const blogRoutes = posts.map((post) => ({
-    url: `${siteUrl}/${post.slug}`,
-    lastModified: post._updatedAt,
+    url: `${baseUrl}/${post.slug}`,
+    lastModified: new Date(post._updatedAt || Date.now()).toISOString(),
   }));
 
-  // ✅ Add static pages only if they exist in your project
+  // ✅ Build static URLs
   const staticRoutes = STATIC_ROUTES.map((path) => ({
-    url: `${siteUrl}${path}`,
+    url: `${baseUrl}${path}`,
     lastModified: new Date().toISOString(),
   }));
 
-  // ✅ Combine and return
+  // ✅ Combine and return sitemap entries
   return [...staticRoutes, ...blogRoutes];
 }
