@@ -80,10 +80,10 @@ export default function DesktopHeader() {
             <nav>
               <ul className="flex items-center space-x-7 text-gray-800 font-semibold">
                 <li><Link href="/" className="hover:text-blue-600 transition-colors group">Home</Link></li>
-                <li><Link href="#services" className="flex items-center hover:text-blue-600 transition-colors group">Services <DropdownArrow /></Link></li>
-                <li><Link href="#pricing" className="flex items-center hover:text-blue-600 transition-colors group">Pricing <DropdownArrow /></Link></li>
-                <li><Link href="#faq" className="flex items-center hover:text-blue-600 transition-colors group">FAQ <DropdownArrow /></Link></li>
-                <li><Link href="/blogs" className="hover:text-blue-600 transition-colors group">Blogs</Link></li>
+                <li><Link href="https://www.gmb.expert/#services" className="flex items-center hover:text-blue-600 transition-colors group">Services <DropdownArrow /></Link></li>
+                <li><Link href="https://www.gmb.expert/#pricing" className="flex items-center hover:text-blue-600 transition-colors group">Pricing <DropdownArrow /></Link></li>
+                <li><Link href="https://www.gmb.expert/#faq" className="flex items-center hover:text-blue-600 transition-colors group">FAQ <DropdownArrow /></Link></li>
+                <li><Link href="https://www.gmb.expert/blogs" className="hover:text-blue-600 transition-colors group">Blogs</Link></li>
               </ul>
             </nav>
             <a href="https://www.gmb.expert/#contact" className="bg-slate-800 text-white font-bold py-3 px-6 rounded-lg shadow-sm hover:bg-slate-900 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.gmb.expert/sitemap.xml
+Sitemap: https://yourdomain.com/sitemap.xml
