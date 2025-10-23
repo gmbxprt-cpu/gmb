@@ -1,26 +1,27 @@
 // app/api/revalidate/route.js
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    const body = await request.json();
-
-    // ✅ Secret validation (to protect endpoint)
+    const { slug } = await request.json();
     const secret = request.nextUrl.searchParams.get("secret");
+
+    // ✅ Secure with secret token
     if (secret !== process.env.REVALIDATE_SECRET) {
       return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
     }
 
-    // ✅ Trigger revalidation
-    const path = body?.slug ? `/${body.slug}` : "/blogs";
+    // ✅ Revalidate specific paths
+    const path = slug ? `/${slug}` : "/blogs";
 
-    await Promise.all([
-      fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/revalidate?path=${path}`, { method: "GET" }),
-      fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/revalidate?path=/sitemap.xml`, { method: "GET" }),
-    ]);
+    revalidatePath(path);
+    revalidatePath("/sitemap.xml"); // Refresh sitemap cache too
+    revalidatePath("/"); // Optional: refresh homepage
 
     return NextResponse.json({ revalidated: true, path });
   } catch (err) {
+    console.error("Revalidation error:", err);
     return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

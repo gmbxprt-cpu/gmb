@@ -1,23 +1,27 @@
 import { client } from "../../studio/lib/sanity.client";
 import imageUrlBuilder from "@sanity/image-url";
 
+export const revalidate = 60; // 🔁 Revalidate every 1 minute (or less if webhook triggers)
+
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
   return builder.image(source);
 }
 
 export default async function BlogPage() {
-  const query = `*[_type == "post"] | order(publishedAt desc){
-    _id,
-    title,
-    slug,
-    mainImage,
-    publishedAt,
-    "author": author->name,
-    "categories": categories[]->title
-  }`;
+  // ✅ Fetch only published posts with slugs
+  const query = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] 
+    | order(publishedAt desc){
+      _id,
+      title,
+      slug,
+      mainImage,
+      publishedAt,
+      "author": author->name,
+      "categories": categories[]->title
+    }`;
 
-  const posts = await client.fetch(query);
+  const posts = await client.fetch(query, {}, { cache: "no-store" }); // ✅ Always fresh data
 
   return (
     <main className="max-w-6xl mx-auto py-16 px-4 bg-white text-slate-800 min-h-screen">
@@ -67,7 +71,11 @@ export default async function BlogPage() {
               )}
 
               <p className="text-sm text-gray-500 mb-3">
-                {new Date(post.publishedAt).toLocaleDateString()}
+                {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
               </p>
 
               {post.categories && post.categories.length > 0 && (

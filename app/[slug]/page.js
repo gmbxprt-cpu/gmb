@@ -1,30 +1,52 @@
-// app/[slug]/page.jsx
 import React from "react";
+import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import { client } from "../../studio/lib/sanity.client"; // adjust path if different
-import { urlFor } from "../../studio/lib/urlFor"; // adjust path if different
+import { client } from "../../studio/lib/sanity.client";
+import { urlFor } from "../../studio/lib/urlFor";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 
-// 🆕 Force periodic revalidation (fresh data every 30s)
-// If you want instant fresh data on every request: export const revalidate = 0;
-export const revalidate = 30;
+export const revalidate = 60; // ⏱ Revalidate every 1 min (or 0 for instant freshness)
+
+// ✅ Generate all valid slugs for static pre-render
+export async function generateStaticParams() {
+  const query = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))]{
+    "slug": slug.current
+  }`;
+  const slugs = await client.fetch(query);
+  return slugs.map((post) => ({ slug: post.slug }));
+}
+
+// ✅ Optional SEO Metadata (improves indexing)
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+  const query = `*[_type == "post" && slug.current == $slug][0]{ title }`;
+  const post = await client.fetch(query, { slug });
+
+  if (!post) return { title: "Post not found | GMB Expert" };
+  return {
+    title: `${post.title} | GMB Expert`,
+    alternates: {
+      canonical: `https://www.gmb.expert/${slug}`,
+    },
+  };
+}
 
 export default async function PostPage({ params }) {
   const { slug } = params;
 
-  const query = `*[_type == "post" && slug.current == $slug][0]{
+  const query = `*[_type == "post" && defined(slug.current) && slug.current == $slug && !(_id in path("drafts.**"))][0]{
+    _id,
     title,
     publishedAt,
-    "mainImage": mainImage.asset->{
-      url
-    },
+    mainImage,
     body
   }`;
 
-  const post = await client.fetch(query, { slug });
+  // ✅ Force fresh fetch to avoid stale cache
+  const post = await client.fetch(query, { slug }, { cache: "no-store" });
 
   if (!post) {
-    return <div className="text-center py-20 text-xl">Post not found 😢</div>;
+    notFound(); // 🔥 Built-in 404
   }
 
   const components = {
@@ -116,24 +138,6 @@ export default async function PostPage({ params }) {
 
   return (
     <>
-      <style>{`
-        .post-article { color: #0f172a; }
-        .post-article .link-lite { color: #0b72a6; }
-        .post-article .caption-lite { color: #475569; font-size: 0.95rem; }
-        .post-article .blockquote-lite { border-color: #e2e8f0; color: #475569; background: transparent; padding-left: 0.75rem; }
-        .post-article img { filter: none; }
-        @media (prefers-color-scheme: dark) {
-          .post-article { color: #e6eef8; }
-          .post-article .link-lite { color: #7fcdff; }
-          .post-article .caption-lite { color: #cbd5e1; }
-          .post-article .blockquote-lite { border-color: #334155; color: #cbd5e1; }
-          .post-article code { background: rgba(255,255,255,0.03); color: #e6eef8; }
-        }
-        .post-article p, .post-article li { line-height: 1.8; }
-        .post-article :where(.prose) { color: inherit; }
-        .post-article :where(.prose) a { color: inherit; }
-      `}</style>
-
       <article className="post-article w-full max-w-none mx-0 px-0 pt-0 pb-10">
         <div className="w-full px-0">
           <h1 className="text-4xl md:text-5xl font-extrabold mt-0 mb-2 leading-tight text-left">
@@ -142,15 +146,19 @@ export default async function PostPage({ params }) {
 
           {post.publishedAt && (
             <p className="text-gray-500 mb-6 text-left">
-              {new Date(post.publishedAt).toLocaleDateString()}
+              {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </p>
           )}
         </div>
 
-        {post.mainImage?.url && (
+        {post.mainImage && (
           <div className="mb-6 w-full px-0">
             <img
-              src={post.mainImage.url}
+              src={urlFor(post.mainImage).width(1200).url()}
               alt={post.title}
               className="w-full rounded-none object-cover"
             />
@@ -162,35 +170,7 @@ export default async function PostPage({ params }) {
         </div>
       </article>
 
-      {typeof WhatsAppButton !== "undefined" ? (
-        <WhatsAppButton phoneNumber={phoneNumber} />
-      ) : (
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Chat on WhatsApp"
-          className="fixed z-[9999] right-4 bottom-6"
-          style={{ WebkitTapHighlightColor: "transparent" }}
-        >
-          <span className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg">
-            <svg
-              className="w-7 h-7"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12.04 2.16c-5.49 0-9.94 4.45-9.94 9.94 0 1.96.58 3.82 1.63 5.43l-1.68 5.67 5.8-1.55c1.51.87 3.2 1.34 4.19 1.34h.02c5.49 0 9.94-4.45 9.94-9.94 0-2.67-1.04-5.18-2.92-7.06-1.88-1.88-4.39-2.92-7.06-2.92zM12.04 20.89c-1.6 0-3.11-.47-4.43-1.34l-.27-.16-2.78.74.75-2.73-.18-.28c-.97-1.49-1.52-3.2-1.52-4.99.01-4.75 3.86-8.61 8.61-8.61 2.3 0 4.46.9 6.09 2.53 1.63 1.63 2.53 3.8 2.53 6.09.01 4.75-3.86 8.61-8.61 8.61z"
-                fill="#fff"
-              />
-            </svg>
-          </span>
-        </a>
-      )}
+      <WhatsAppButton phoneNumber={phoneNumber} />
     </>
   );
 }

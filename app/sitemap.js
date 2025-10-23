@@ -1,32 +1,35 @@
 // app/sitemap.js
 import { client } from "../studio/lib/sanity.client";
 
-export const revalidate = 43200; // Revalidate every 12 hours
+// ✅ Disable ISR — we’ll control revalidation via webhook
+export const revalidate = 0; // always fresh when webhook triggers
 
-// ✅ Define your static routes here
+// ✅ Define static routes
 const STATIC_ROUTES = [
-  "/",          // Home
-  "/blogs",     // Blog listing page
+  "/",        // Home
+  "/blogs",   // Blog list
 ];
 
 export default async function sitemap() {
-  // ✅ Determine correct base URL (handles local, Vercel preview, and production)
+  // ✅ Compute base URL dynamically
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
     (process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : "https://www.gmb.expert");
 
-  // ✅ Fetch blog posts from Sanity
-  const query = `*[_type == "post" && defined(slug.current)]{
-    "slug": slug.current,
-    _updatedAt
-  }`;
-  const posts = await client.fetch(query);
+  // ✅ Fetch only published posts with defined slugs
+  const query = `
+    *[_type == "post" && defined(slug.current) && !(_id in path('drafts.**'))]{
+      "slug": slug.current,
+      _updatedAt
+    }
+  `;
+  const posts = await client.fetch(query, {}, { cache: "no-store" });
 
-  // ✅ Build dynamic blog URLs
+  // ✅ Build dynamic post URLs
   const blogRoutes = posts.map((post) => ({
-    url: `${baseUrl}/${post.slug}`,
+    url: `${baseUrl}/${post.slug}`.replace(/([^:]\/)\/+/g, "$1"), // clean double slashes
     lastModified: new Date(post._updatedAt || Date.now()).toISOString(),
   }));
 
@@ -36,6 +39,6 @@ export default async function sitemap() {
     lastModified: new Date().toISOString(),
   }));
 
-  // ✅ Combine and return sitemap entries
+  // ✅ Return final sitemap
   return [...staticRoutes, ...blogRoutes];
 }
