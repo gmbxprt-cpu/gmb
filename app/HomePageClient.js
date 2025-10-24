@@ -47,16 +47,19 @@ export default function HomePageClient() {
       {/* 1. Hook & Introduction */}
       <div id="home" ref={homeRef}><HeroSection /></div>
       <WhatIsGmbSection />
+
+      {/* 3. Pricing (Monthly & Onetime) - MOVED UP */}
+      <div id="pricing" ref={pricingRef}>
+                <OnetimeServices />
+        <PricingSection />
+
+      </div>
       
       {/* 2. Benefits & Features */}
       <BenefitsSection />
       <div id="services" ref={servicesRef}><WhyChooseUsSection /></div>
       
-      {/* 3. Pricing (Monthly & Onetime) - MOVED UP */}
-      <div id="pricing" ref={pricingRef}>
-        <PricingSection />
-        <OnetimeServices />
-      </div>
+    
 
       {/* 4. Build Trust & Show Proof */}
       <WorkingWithSection />

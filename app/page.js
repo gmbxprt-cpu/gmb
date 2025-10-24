@@ -35,10 +35,10 @@ function addHomepageSchema() {
     'address': [
       {
         '@type': 'PostalAddress',
-        'streetAddress': 'Office No - 02, Fourth Floor, City Court', 
-        'addressLocality': 'Zirakpur',
-        'postalCode': '140603',
-        'addressRegion': 'PB', // PB for Punjab
+        'streetAddress': 'Office No - 02, Fourth Floor, City Court, Zirakpur', 
+        'addressLocality': 'Chandigarh',
+        'postalCode': '160101',
+        'addressRegion': 'CHD', // CHD for Punjab
         'addressCountry': 'IN'
       },
       {

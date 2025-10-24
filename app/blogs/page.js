@@ -1,7 +1,8 @@
 import { client } from "../../studio/lib/sanity.client";
 import imageUrlBuilder from "@sanity/image-url";
+import WhatsAppButton from "@/components/common/WhatsAppButton"; // ✅ Import your button
 
-export const revalidate = 60; // 🔁 Revalidate every 1 minute (or less if webhook triggers)
+export const revalidate = 60; // 🔁 Revalidate every 1 minute
 
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
@@ -24,7 +25,7 @@ export default async function BlogPage() {
   const posts = await client.fetch(query, {}, { cache: "no-store" }); // ✅ Always fresh data
 
   return (
-    <main className="max-w-6xl mx-auto py-16 px-4 bg-white text-slate-800 min-h-screen">
+    <main className="relative max-w-6xl mx-auto py-16 px-4 bg-white text-slate-800 min-h-screen">
       {/* Page Heading */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900">
@@ -97,6 +98,9 @@ export default async function BlogPage() {
           </article>
         ))}
       </div>
+
+      {/* ✅ WhatsApp Floating Button */}
+      <WhatsAppButton />
     </main>
   );
 }
