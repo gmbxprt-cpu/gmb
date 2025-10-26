@@ -1,19 +1,31 @@
 "use client";
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 // 👇 Step 1: useRouter ko import karein
 import { useRouter } from 'next/navigation';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function EmbeddedContactForm() {
   const [status, setStatus] = useState('');
   const [showOther, setShowOther] = useState(false);
+  const [captchaValue, setCaptchaValue] = useState(null);
+  const recaptchaRef = useRef(null);
   // 👇 Step 2: useRouter ko initialize karein
   const router = useRouter();
 
-  // 👇 Step 3: Yahan se 'if (status === 'success')' wala block HATA diya gaya hai.
+  // ✅ reCAPTCHA site key (client-side) — set in your .env as NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ Ensure captcha is completed
+    if (!captchaValue) {
+      alert('Please complete the reCAPTCHA before submitting.');
+      return;
+    }
+
     setStatus('sending');
+
     const formData = {
       name: e.target.name.value,
       email: e.target.email.value,
@@ -21,6 +33,7 @@ export default function EmbeddedContactForm() {
       gmbLink: e.target.gmbLink.value,
       interest: e.target.interest.value,
       other: e.target.other ? e.target.other.value : '',
+      captcha: captchaValue, // send token to backend for verification
     };
 
     try {
@@ -29,13 +42,22 @@ export default function EmbeddedContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+
       if (response.ok) {
-        // 👇 Step 4: setStatus('success') ki jagah /thank-you page par redirect karein
+        // reset the widget and local captcha state
+        if (recaptchaRef.current) recaptchaRef.current.reset();
+        setCaptchaValue(null);
+        // push to thank-you page
         router.push('/thank-you');
       } else {
+        // reset captcha so user can try again
+        if (recaptchaRef.current) recaptchaRef.current.reset();
+        setCaptchaValue(null);
         setStatus('error');
       }
     } catch (error) {
+      if (recaptchaRef.current) recaptchaRef.current.reset();
+      setCaptchaValue(null);
       setStatus('error');
     }
   };
@@ -85,6 +107,16 @@ export default function EmbeddedContactForm() {
               <input id="hero-other" type="text" name="other" placeholder="Specify your requirement" className="w-full rounded-md border-slate-300 shadow-sm p-3 text-gray-900 placeholder:text-slate-500 focus:ring-blue-500 focus:border-blue-500"/>
             </div>
         )}
+
+        {/* ✅ Google reCAPTCHA widget */}
+        <div className="flex justify-center">
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={siteKey}
+            onChange={(token) => setCaptchaValue(token)}
+          />
+        </div>
+
         <div>
           <button type="submit" disabled={status === 'sending'} className="w-full justify-center rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 py-3 px-4 text-white font-semibold hover:opacity-90 disabled:bg-slate-400 shadow-lg">
             {status === 'sending' ? 'Submitting...' : 'Request a Callback'}

@@ -24,7 +24,7 @@ export const plansData = {
 export const onetimeServicesData = {
   phoneVerification: {
     name: 'PHONE NUMBER INSTANT VERIFICATION',
-    price: 9500,
+    price: 10,000,
     type: '/Instant',
     features: [
       { text: '24 Hours Number Will Live', included: true },
@@ -36,7 +36,7 @@ export const onetimeServicesData = {
   },
   newListing: {
     name: 'GMB NEW LISTING',
-    price: 12000,
+    price: 12,000,
     type: '/Same Day',
     features: [
       { text: 'New Listing With Number Will Live', included: true },

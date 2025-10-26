@@ -124,10 +124,10 @@ export default function BottomNavBar({ activeSection }) {
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md border-t border-slate-200/80 shadow-[0_-5px_15px_rgba(0,0,0,0.08)] z-50">
       <div className="max-w-md mx-auto h-full grid grid-cols-5 items-center">
-        <NavItem href="#" icon={BottomNavIcons.home} label="Home" isActive={activeSection === "home"} />
-        <NavItem href="#services" icon={BottomNavIcons.services} label="Services" isActive={activeSection === "services"} />
-        <NavItem href="#pricing" icon={BottomNavIcons.pricing} label="Pricing" isActive={activeSection === "pricing"} />
-        <NavItem href="#faq" icon={BottomNavIcons.faq} label="FAQ" isActive={activeSection === "faq"} />
+        <NavItem href="https://www.gmb.expert/" icon={BottomNavIcons.home} label="Home" isActive={activeSection === "home"} />
+        <NavItem href="https://www.gmb.expert/#services" icon={BottomNavIcons.services} label="Services" isActive={activeSection === "services"} />
+        <NavItem href="https://www.gmb.expert/#pricing" icon={BottomNavIcons.pricing} label="Pricing" isActive={activeSection === "pricing"} />
+        <NavItem href="https://www.gmb.expert/#faq" icon={BottomNavIcons.faq} label="FAQ" isActive={activeSection === "faq"} />
 
         {/* country-specific item */}
         {isIndia === null ? (
