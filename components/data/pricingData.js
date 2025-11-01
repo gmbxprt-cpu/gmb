@@ -19,12 +19,12 @@ export const plansData = {
     price: 6000,
     features: {
       ranking: true,
-      top_keywords: '2-4',
-      posters: '15',
-      results_time: '2-3',
+      top_keywords: '2-4 Keywords',
+      posters: '15 Monthly',
+      results_time: '2-3 Months',
       report: 'Monthly 1',
-      citations: '100',
-      backlinks: '15',
+      citations: '500',
+      backlinks: '40',
       audit: false,
       review_reply: false,
       media_upload: false,
@@ -37,12 +37,12 @@ export const plansData = {
     price: 8000,
     features: {
       ranking: true,
-      top_keywords: '4-7',
-      posters: '20',
-      results_time: '2-3',
+      top_keywords: '4-7 Keywords',
+      posters: '20 Monthly',
+      results_time: '2-3 Months',
       report: 'Monthly 2',
-      citations: '400',
-      backlinks: '30',
+      citations: '1200',
+      backlinks: '100',
       audit: true,
       review_reply: false,
       media_upload: false,
@@ -55,12 +55,12 @@ export const plansData = {
     price: 12000,
     features: {
       ranking: true,
-      top_keywords: '8-12',
-      posters: '30',
-      results_time: '1-2',
+      top_keywords: '8-12 Keywords',
+      posters: '30 Monthly',
+      results_time: '1-2 Months',
       report: 'Weekly',
-      citations: '1500',
-      backlinks: '80',
+      citations: '5000',
+      backlinks: '250',
       audit: true,
       review_reply: true,
       media_upload: true,
@@ -74,7 +74,7 @@ export const plansData = {
 export const onetimeServicesData = {
   phoneVerification: {
     name: 'PHONE NUMBER INSTANT VERIFICATION',
-    price: 10000, // ✅ number, not string
+    price: 9000, // ✅ number, not string
     type: '/Instant',
     features: [
       { text: '24 Hours Number Will Live', included: true },
@@ -86,7 +86,7 @@ export const onetimeServicesData = {
   },
   newListing: {
     name: 'GMB NEW LISTING',
-    price: 12000, // ✅ number, not string
+    price: 9500, // ✅ number, not string
     type: '/Same Day',
     features: [
       { text: 'New Listing With Number Will Live', included: true },
@@ -99,7 +99,7 @@ export const onetimeServicesData = {
   },
   reinstatement: {
     name: 'GMB PROFILE SUSPENDED REINSTATEMENT',
-    price: 20000,
+    price: 12000,
     type: '/Onetime',
     features: [
       { text: 'Appeal a Denied Reinstatement Request', included: true },
